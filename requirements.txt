@@ -4,3 +4,5 @@ pydantic
 openai
 loadenv
 geopy
+starlette
+uvicorn
