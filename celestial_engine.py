@@ -4,6 +4,7 @@ from typing import Any, Optional
 import httpx
 from mcp.server.fastmcp import FastMCP, Context
 from pydantic import BaseModel, Field
+from geopy.geocoders import Nominatim
 
 # Load environment variables from .env
 from dotenv import load_dotenv
@@ -115,6 +116,25 @@ class MoonVisibilityArgs(BaseModel):
     startDate: str = Field(..., description="YYYY-MM-dd start date")
     endDate: str = Field(..., description="YYYY-MM-dd end date")
     timezone: str = Field(..., description="Timezone offset in hours, e.g. '2', '-4'")
+
+@mcp.tool()
+async def geocode_location(location: str) -> dict:
+    """
+    Convert a location string into latitude/longitude using Nominatim.
+    Example: "London, UK" -> {"latitude": 51.5073219, "longitude": -0.1276474}
+    """
+    try:
+        result = geolocator.geocode(location)
+        if not result:
+            return {"error": f"No coordinates found for '{location}'"}
+
+        return {
+            "location": location,
+            "latitude": result.latitude,
+            "longitude": result.longitude
+        }
+    except Exception as e:
+        return {"error": str(e)}
 
 @mcp.tool()
 async def moon_visibility(args: MoonVisibilityArgs) -> str:
