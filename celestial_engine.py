@@ -5,15 +5,16 @@ import httpx
 from mcp.server.fastmcp import FastMCP, Context
 from pydantic import BaseModel, Field
 
+# Load environment variables from .env
+from dotenv import load_dotenv
+load_dotenv()
+
 # MCP server instance
 mcp = FastMCP("HMNAO Celestial Engine")
 
 # Base URL and optional subscription key environment variables
-CELESTIAL_BASE_URL = os.getenv(
-    "CELESTIAL_BASE_URL",
-    "https://nonlive-developer-gateway.admiralty.co.uk/celestial-engine"
-)
-SUBSCRIPTION_KEY = os.getenv("CELESTIAL_SUBSCRIPTION_KEY", "e682c2c930b843249cf3dcf5f20f4a1f")  # or "Ocp-Apim-Subscription-Key" from OpenAPI
+CELESTIAL_BASE_URL = os.getenv("CELESTIAL_BASE_URL","")
+SUBSCRIPTION_KEY = os.getenv("CELESTIAL_SUBSCRIPTION_KEY", "")  # or "Ocp-Apim-Subscription-Key" from OpenAPI
 
 #
 # Utility: make a request to the Celestial Engine

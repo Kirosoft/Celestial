@@ -1,3 +1,6 @@
 FastMCP
 httpx
 pydantic
+openai
+loadenv
+geopy
