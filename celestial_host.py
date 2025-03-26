@@ -105,6 +105,7 @@ Respond with valid JSON of the form:
 
 No extra keys. Only valid JSON. The "input" object must match the tool's input schema if you call a tool.
 If you do not need a tool, just return one item of type "text".
+After you have used the tool just return the JSON output and nothing else
         """.strip()
 
         # 3) OpenAI chat request (openai>=1.0.0)
