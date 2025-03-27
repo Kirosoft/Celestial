@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 import os
 import json
 from typing import Any, Optional
@@ -155,6 +156,13 @@ async def moon_visibility(args: MoonVisibilityArgs) -> str:
     }
     data = await celestial_request(endpoint, params)
     return json.dumps(data, indent=2)
+
+@mcp.tool()
+def get_current_datetime() -> str:
+    """
+    Returns the current UTC date and time in ISO 8601 format.
+    """
+    return datetime.now(timezone.utc).isoformat() + "Z"
 
 #
 # Main entry point if you want to run this file directly
