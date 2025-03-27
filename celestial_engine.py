@@ -17,6 +17,9 @@ mcp = FastMCP("HMNAO Celestial Engine")
 CELESTIAL_BASE_URL = os.getenv("CELESTIAL_BASE_URL","")
 SUBSCRIPTION_KEY = os.getenv("CELESTIAL_SUBSCRIPTION_KEY", "")  # or "Ocp-Apim-Subscription-Key" from OpenAPI
 
+# Create an instance of Nominatim with a user agent.
+geolocator = Nominatim(user_agent="myGeocoder")
+
 #
 # Utility: make a request to the Celestial Engine
 #

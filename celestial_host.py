@@ -105,7 +105,7 @@ Respond with valid JSON of the form:
 
 No extra keys. Only valid JSON. The "input" object must match the tool's input schema if you call a tool.
 If you do not need a tool, just return one item of type "text".
-After you have used the tool just return the JSON output and nothing else
+After you have used the tools return the response is a nice human readable form. For example if there are multiple results return a table.
         """.strip()
 
         # 3) OpenAI chat request (openai>=1.0.0)
@@ -156,6 +156,33 @@ After you have used the tool just return the JSON output and nothing else
         """
         await self.exit_stack.aclose()
 
+    async def prettify_output(self, query: str) -> str:
+        """
+        Use OpenAI's chat API to interpret the query, then optionally call MCP tools.
+        Returns the final text or tool call results as a string.
+        """
+
+        # 2) Construct a system prompt
+        system_prompt = f"""
+You are a helpful assistant that will receive JSON and format the output into a nice human readable string or table based on the json received.
+The user has asked: {query}
+Return the output as a nice string or table result.
+        """.strip()
+
+        # 3) OpenAI chat request (openai>=1.0.0)
+        chat_response = openai.chat.completions.create(
+            model="o3-mini",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": query},
+            ],
+        )
+
+        # 4) Extract the model's text
+        assistant_message = chat_response.choices[0].message.content.strip()
+
+        return assistant_message
+    
 # -------------------------------------------------------------------
 # 2) Starlette HTTP app
 # We'll define a route "/query" that accepts a 'q' query param,
@@ -189,7 +216,10 @@ async def handle_query(request):
 
     # Call the MCP-based LLM logic
     response_text = await mcp_client.process_query(q)
-    return JSONResponse({"result": response_text})
+
+    nice_output = await mcp_client.prettify_output(response_text)
+
+    return JSONResponse({"result": nice_output})
 
 # Starlette routes
 routes = [
