@@ -105,7 +105,9 @@ Respond with valid JSON of the form:
 
 No extra keys. Only valid JSON. The "input" object must match the tool's input schema if you call a tool.
 If you do not need a tool, just return one item of type "text".
-Dont forget if the use specifies today or this week - use the datetime tool to find out todays datetime. The year is definately not 2023 use the datetime tool.
+Dont forget if the use the datetime tool when the user specifies 'today' or 'this week' for example. 
+Use the datetime tool to find out todays datetime if a specific datetime is not given. 
+The year is definately not 2023 or 2024 use the datetime tool.
 
         """.strip()
 
@@ -168,6 +170,8 @@ Dont forget if the use specifies today or this week - use the datetime tool to f
 You are a helpful assistant that will receive JSON and format the output into a nice human readable string or table based on the json received.
 The user has asked: {query}
 Return the output as a nice string or table result.
+When building a table use just simple ascii like '-' for the delimeters.
+
         """.strip()
 
         # 3) OpenAI chat request (openai>=1.0.0)
