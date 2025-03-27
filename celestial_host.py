@@ -167,10 +167,9 @@ The year is definately not 2023 or 2024 use the datetime tool.
 
         # 2) Construct a system prompt
         system_prompt = f"""
-You are a helpful assistant that will receive JSON and format the output into a nice human readable string or table based on the json received.
+You are a helpful assistant that will receive JSON and format the output into a nice human readable HTML.
+If there is table data create a HTML table.
 The user has asked: {query}
-Return the output as a nice string or table result.
-When building a table use just simple ascii like '-' for the delimeters.
 
         """.strip()
 
